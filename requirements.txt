@@ -3,5 +3,7 @@ wheel
 gunicorn
 rsa
 requests
+openai
+python-dotenv
 google-cloud-language
 google-cloud-secret-manager
