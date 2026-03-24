@@ -11,7 +11,7 @@ class SentimentAnalysis:
         if not texts:
             return {'total_reviews': 0}
 
-        content = "\n".join(texts[:5])
+        content = "\n".join(texts)
 
         try:
             response = client.chat.completions.create(
