@@ -1,11 +1,12 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 import flask
 from flask.views import MethodView
 from index import Index
 from movie import Movie
 import os
 import json
-from dotenv import load_dotenv
-load_dotenv()
 
 app = flask.Flask(__name__)   
 
