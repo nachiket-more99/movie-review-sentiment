@@ -52,7 +52,7 @@ class Movie(MethodView):
         if response.status_code == 200:
             data = response.json()
             results = data.get('results', [])
-            for review in results[:10]:
+            for review in results[:100]:
                 self.reviews.append(review.get('content'))
         else:
             print("Error occurred in reviews:", response.status_code)
