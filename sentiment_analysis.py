@@ -1,45 +1,53 @@
 import os
+import json
 from openai import OpenAI
 
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 class SentimentAnalysis:
 
     @staticmethod
     def analyse_reviews(texts):
         if not texts:
-            return {
-                'total_reviews': 0
-            }
+            return {'total_reviews': 0}
 
-        # Join reviews (limit size to avoid token explosion)
-        content = "\n".join(texts[:10])
-
-        prompt = f"""
-Analyze the sentiment of the following movie reviews.
-
-Return ONLY JSON in this format:
-{{
-  "positive": number,
-  "neutral": number,
-  "negative": number
-}}
-
-Reviews:
-{content}
-"""
+        content = "\n".join(texts[:5])
 
         try:
             response = client.chat.completions.create(
                 model="gpt-4o-mini",
-                messages=[{"role": "user", "content": prompt}],
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "You are a strict JSON generator. Only output valid JSON."
+                    },
+                    {
+                        "role": "user",
+                        "content": f"""
+Classify these movie reviews into sentiment.
+
+Return ONLY JSON like:
+{{"positive": number, "neutral": number, "negative": number}}
+
+Reviews:
+{content}
+"""
+                    }
+                ],
                 temperature=0,
             )
 
             result_text = response.choices[0].message.content.strip()
 
-            import json
-            result = json.loads(result_text)
+            start = result_text.find("{")
+            end = result_text.rfind("}") + 1
+
+            if start == -1 or end == -1:
+                raise ValueError("No JSON found")
+
+            clean_json = result_text[start:end]
+
+            result = json.loads(clean_json)
 
             total = result["positive"] + result["neutral"] + result["negative"]
 
@@ -52,6 +60,11 @@ Reviews:
 
         except Exception as e:
             print("OpenAI error:", e)
+
+            # fallback (so UI doesn't break)
             return {
-                'total_reviews': 0
+                'total_reviews': 0,
+                'pos_score': 0,
+                'neutral_score': 0,
+                'neg_score': 0,
             }
