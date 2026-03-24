@@ -3,12 +3,9 @@ from flask.views import MethodView
 from index import Index
 from movie import Movie
 import os
-from google.cloud import secretmanager
 import json
-
-
-# Set the environment variable with the retrieved secret
-os.environ["tmdb_bearer"] = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMTllMjY4NzFhY2I0YTg2Y2FhYWE5YWJkYmMxMGY5YyIsIm5iZiI6MTc3NDIwNjU3OC4xODQsInN1YiI6IjY5YzAzZTcyZTRhZDczNjMxOTAxY2Q0ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uk1ltYR9uaJeIveukHgODN0LLTaEa1g1gmtD7thUHpU"
+from dotenv import load_dotenv
+load_dotenv()
 
 app = flask.Flask(__name__)   
 

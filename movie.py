@@ -5,6 +5,8 @@ import threading
 import os
 from sentiment_analysis import SentimentAnalysis
 
+sentiment_cache = {}
+
 class Movie(MethodView):
     # retrive movie details with reviews
     def get(self, movie_id=None):
@@ -16,7 +18,7 @@ class Movie(MethodView):
 
             headers = {
                 "accept": "application/json",
-                "Authorization": f"Bearer {os.environ.get('tmdb_bearer')}" 
+                "Authorization": f"Bearer {os.getenv("TMDB_BEARER")}" 
             }
 
             reviews_thread = threading.Thread(target=self.get_reviews, args=(url_reviews, headers))
@@ -28,7 +30,17 @@ class Movie(MethodView):
             reviews_thread.join()
             details_thread.join()
 
-            analysis = SentimentAnalysis.analyse_reviews(self.reviews)
+            # analysis = SentimentAnalysis.analyse_reviews(self.reviews)
+            # self.movie_details['analysis'] = analysis
+
+            if movie_id in sentiment_cache:
+                analysis = sentiment_cache[movie_id]
+                print("got analysis form cache")
+            else:
+                print("calling llm for analysis")
+                analysis = SentimentAnalysis.analyse_reviews(self.reviews)
+                sentiment_cache[movie_id] = analysis
+
             self.movie_details['analysis'] = analysis
 
             return render_template('movie.html', movie_details=self.movie_details)

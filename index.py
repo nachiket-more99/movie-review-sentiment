@@ -2,6 +2,7 @@ from flask import render_template, request
 from flask.views import MethodView
 import requests
 import os
+import concurrent.futures
 
 class Index(MethodView):
     # get movie list
@@ -11,13 +12,19 @@ class Index(MethodView):
 
         headers = {
             "accept": "application/json",
-            "Authorization": f"Bearer {os.environ.get('tmdb_bearer')}" 
+            "Authorization": f"Bearer {os.getenv("TMDB_BEARER")}" 
         }
 
         responses = []
         
-        for i in range(1, 4):
-            responses.append(requests.get(url+f"page={i}", headers=headers))
+        # for i in range(1, 4):
+        #     responses.append(requests.get(url+f"page={i}", headers=headers))
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            futures = [
+                executor.submit(requests.get, url + f"page={i}", headers=headers)
+                for i in range(1, 4)
+            ]
+            responses = [f.result() for f in futures]
 
         movies = {}
         i = 0
