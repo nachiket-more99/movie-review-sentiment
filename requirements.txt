@@ -1,0 +1,7 @@
+flask
+wheel
+gunicorn
+rsa
+requests
+google-cloud-language
+google-cloud-secret-manager

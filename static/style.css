@@ -1,0 +1,149 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+.bold {
+  font-weight: 600;
+}
+
+.main {
+  position: relative;
+}
+
+.navbar {
+  background-color: #032541;
+  color: white;
+  height: fit-content;
+  padding: 5px 50px;
+}
+
+.main-container {
+  margin: 50px;
+}
+.container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+.result-card {
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  position: relative;
+  width: 70%;
+  margin: 0 auto;
+  background-color: transparent;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+.result-card-subtitle {
+  font-size: 14px;
+}
+
+.result-card img {
+  width: 300px;
+  height: 450px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+
+.result-card-content {
+  flex-grow: 1;
+  color: white;
+}
+
+.sentiment-bar {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.sentiment-bar > div {
+  display: flex;
+}
+
+.sentiment-bar .bar {
+  height: 10px;
+  transition: width 0.3s ease;
+  border-radius: 10px;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.pos {
+  background: #21d07a;
+}
+
+.neut {
+  background: #d0c621;
+}
+
+.neg {
+  background: #d02163;
+}
+
+.sentiment-card-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.card {
+  width: 200px;
+  height: 300px;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  margin: 20px;
+  position: relative;
+  background-color: transparent;
+}
+
+.card-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  word-wrap: break-word;
+  white-space: normal;
+  border-radius: 0 0 10px 10px;
+}
+
+.card-text #date {
+  font-size: 11px;
+}
