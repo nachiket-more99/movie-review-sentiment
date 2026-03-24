@@ -1,40 +1,175 @@
-body {
+/* ============================================================
+   CineSense — style.css
+   ============================================================ */
+
+:root {
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --surface2: #1c1c28;
+  --border: rgba(255, 255, 255, 0.07);
+  --text: #f0eee8;
+  --muted: rgba(240, 238, 232, 0.45);
+  --accent: #e8a838;
+  --pos: #4ecca3;
+  --neu: #e8a838;
+  --neg: #e25b5b;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-size: 16px;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 300;
-  letter-spacing: 2px;
 }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  min-height: 100vh;
+}
+
 .bold {
   font-weight: 600;
 }
+
+/* ── SHARED NAV ─────────────────────────────────────────── */
+
+.navbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* detail page overrides navbar to float over bg */
+.navbar-overlay {
+  background: rgba(10, 10, 15, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+/* ── HOME PAGE ──────────────────────────────────────────── */
 
 .main {
   position: relative;
 }
 
-.navbar {
-  background-color: #032541;
-  color: white;
-  height: fit-content;
-  padding: 5px 50px;
+.main-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.main-container {
-  margin: 50px;
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 1.5rem;
 }
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 1.5px;
+  color: var(--text);
+}
+
+.section-sub {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  aspect-ratio: 2 / 3;
+  background-color: var(--surface2);
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.65);
+}
+
+.card-text {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 30%, transparent 70%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px;
+  border-radius: 0;
+  text-align: left;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.card-text #date {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 3px;
+  font-weight: 400;
+}
+
+/* ── DETAIL PAGE ────────────────────────────────────────── */
+
+/* Full-page bg container */
 .container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-size: cover;
-  background-position: top;
+  background-position: center top;
   background-repeat: no-repeat;
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
+/* Dark overlay (no blur — keep poster visible) */
 .container::before {
   content: "";
   position: absolute;
@@ -46,104 +181,192 @@ body {
   backdrop-filter: blur(5px);
 }
 
+/* Layout card */
 .result-card {
+  gap: 2.5rem;
+  width: 85%;
+  max-width: 1100px;
   display: flex;
   align-items: center;
   z-index: 2;
   position: relative;
-  width: 70%;
-  margin: 0 auto;
+  margin: auto;
   background-color: transparent;
   border-radius: 5px;
   padding: 20px;
-  margin-bottom: 20px;
   transition: all 0.3s ease;
+
 }
-.result-card-subtitle {
-  font-size: 14px;
-}
+/* 
+.result-card img {
+  width: 200px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-right: 0;
+} */
 
 .result-card img {
   width: 300px;
   height: 450px;
+  aspect-ratio: 2 / 3;
   object-fit: cover;
   border-radius: 5px;
   margin-right: 20px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-right: 0;
 }
+
+/* .result-card-content {
+  flex-grow: 1;
+  color: var(--text);
+} */
 
 .result-card-content {
   flex-grow: 1;
-  color: white;
+  color: var(--text);
+}
+
+.result-card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  letter-spacing: 2.5px;
+  line-height: 1;
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+
+/* .result-card-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+} */
+
+
+.result-card-subtitle {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+
+
+
+.result-card-overview {
+  font-size: 14px;
+  line-height: 1.75;
+  color: rgba(240, 238, 232, 0.78);
+  margin-bottom: 2rem;
+}
+
+/* ── SENTIMENT BARS ─────────────────────────────────────── */
+
+.sentiment-card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .sentiment-bar {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .sentiment-bar > div {
   display: flex;
+  align-items: center;
+}
+
+/* Label row: text left, percentage right */
+.sentiment-bar > div:first-child {
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.sentiment-bar > div:last-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .sentiment-bar .bar {
-  height: 10px;
-  transition: width 0.3s ease;
-  border-radius: 10px;
-  margin-top: 5px;
-  margin-right: 10px;
+  height: 6px;
+  border-radius: 999px;
+  margin-top: 0;
+  margin-right: 0;
+  flex-shrink: 0;
+}
+
+.sentiment-bar span {
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .pos {
-  background: #21d07a;
+  background: var(--pos);
+  box-shadow: 0 0 10px rgba(78, 204, 163, 0.5);
 }
 
 .neut {
-  background: #d0c621;
+  background: var(--neu);
+  box-shadow: 0 0 10px rgba(232, 168, 56, 0.4);
 }
 
 .neg {
-  background: #d02163;
+  background: var(--neg);
+  box-shadow: 0 0 10px rgba(226, 91, 91, 0.4);
 }
 
-.sentiment-card-container {
-  display: flex;
-  flex-direction: column;
+/* Sentiment section wrapper */
+.sentiment-section-wrapper {
+  padding: 1.5rem;
+  background: rgba(10, 10, 15, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  white-space: nowrap;
+.sentiment-section-wrapper h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+  font-weight: 400;
 }
 
-.card {
-  width: 200px;
-  height: 300px;
-  border-radius: 10px;
-  background-size: cover;
-  background-position: center;
-  margin: 20px;
-  position: relative;
-  background-color: transparent;
+/* ── RESPONSIVE ─────────────────────────────────────────── */
+
+@media (max-width: 700px) {
+  .result-card {
+    grid-template-columns: 1fr;
+    width: 90%;
+    margin-top: 80px;
+  }
+
+  .result-card img {
+    width: 140px;
+  }
+
+  .result-card-title {
+    font-size: 34px;
+  }
+
+  .card-container {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
 }
 
-.card-text {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  text-align: center;
-  font-size: 15px;
-  padding: 10px;
-  word-wrap: break-word;
-  white-space: normal;
-  border-radius: 0 0 10px 10px;
-}
 
-.card-text #date {
-  font-size: 11px;
-}
+
+
+
+

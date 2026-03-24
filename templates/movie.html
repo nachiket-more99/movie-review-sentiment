@@ -1,69 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <title>Search Page</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+    <title>{{ movie_details.title }} - CineSense</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
 
-<body>
-<div class="container" style="background-image: url('https://image.tmdb.org/t/p/w600_and_h900_bestv2{{movie_details.poster}}');">
-    <div class="result-card">
-        <img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2{{movie_details.poster}}" alt="Movie poster" id="movie-image" />
+    <div
+      class="container"
+      style="background-image: url('https://image.tmdb.org/t/p/w600_and_h900_bestv2{{ movie_details.poster }}');"
+    >
+
+      <!-- Nav floats over the background -->
+      <nav class="navbar navbar-overlay">
+        <a class="logo" href="/">CINE<span>SENSE</span></a>
+      </nav>
+
+      <div class="result-card">
+
+        <!-- Poster -->
+        <img
+          src="https://image.tmdb.org/t/p/w600_and_h900_bestv2{{ movie_details.poster }}"
+          alt="{{ movie_details.title }} poster"
+          id="movie-image"
+        />
+
+        <!-- Content -->
         <div class="result-card-content">
-            <h1 class="result-card-title bold">{{movie_details.title}}</h1>
-            <p class="result-card-subtitle">{{movie_details.release_date}} &#9679; {{movie_details.genre}}</p>
-            <p style="font-style: italic; color: rgb(181, 181, 181);" class="result-card-subtitle">{{movie_details.tagline}}</pstyle>
-            <h3 class="result-card-subtitle">Overview</h3>
-            <p class="result-card-overview">{{movie_details.overview}}</p>
 
-            {% if movie_details.analysis.total_reviews == 0 %}
-            <p style="font-style: italic; color: rgb(181, 181, 181);" class="result-card-subtitle">sentiments: {{movie_details.analysis.total_reviews}}</p>
-            {% endif %}
+          <h1 class="result-card-title bold">{{ movie_details.title }}</h1>
 
-            {% if movie_details.analysis.total_reviews > 0 %}
-            <h4>Sentiment analysis of reviews</h4>
-            <p style="font-style: italic; color: rgb(181, 181, 181);" class="result-card-subtitle">sentiments: {{movie_details.analysis.total_reviews}}</p>
+          <p class="result-card-subtitle">
+            {{ movie_details.release_date }} &#9679; {{ movie_details.genre }}
+          </p>
+
+          {% if movie_details.tagline %}
+          <p class="result-card-subtitle" style="font-style: italic;">
+            {{ movie_details.tagline }}
+          </p>
+          {% endif %}
+
+          <h3 class="result-card-subtitle" style="margin-top: 12px; color: var(--accent); font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px;">Overview</h3>
+          <p class="result-card-overview">{{ movie_details.overview }}</p>
+
+          <!-- No reviews -->
+          {% if movie_details.analysis.total_reviews == 0 %}
+          <p class="result-card-subtitle" style="font-style: italic;">
+            No reviews analyzed yet.
+          </p>
+          {% endif %}
+
+          <!-- Sentiment analysis -->
+          {% if movie_details.analysis.total_reviews > 0 %}
+          <div class="sentiment-section-wrapper">
+
+            <h4>Audience Sentiment</h4>
+            <p class="result-card-subtitle" style="margin-bottom: 1rem;">
+              Based on {{ movie_details.analysis.total_reviews }} review{{ 's' if movie_details.analysis.total_reviews != 1 else '' }}
+            </p>
+
             <div class="movie">
-                <div class="sentiment-card-container">
-                    {% if movie_details.analysis.pos_score > 0 %}
-                    <div class="sentiment-bar">
-                        <div>Positive Score:</div> 
-                        <div>
-                            <div class="bar pos" style="width: {{ movie_details.analysis.pos_score }}%"></div>
-                            <span>~ {{ movie_details.analysis.pos_score }}%</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% if movie_details.analysis.neutral_score > 0 %}
-                    <div class="sentiment-bar">
-                        <div>Neutral Score:</div> 
-                        <div>
-                            <div class="bar neut" style="width: {{ movie_details.analysis.neutral_score }}%"></div>
-                            <span>~ {{ movie_details.analysis.neutral_score }}%</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% if movie_details.analysis.neg_score > 0 %}
-                    <div class="sentiment-bar">
-                        <div>Negative Score:</div> 
-                        <div>
-                            <div class="bar neg" style="width: {{ movie_details.analysis.neg_score }}%"></div>
-                            <span>~ {{ movie_details.analysis.neg_score }}%</span>
-                        </div>
-                    </div>
-                    {% endif %}
+              <div class="sentiment-card-container">
+
+                {% if movie_details.analysis.pos_score > 0 %}
+                <div class="sentiment-bar">
+                  <div><span>Positive</span><span style="color: var(--pos); font-weight: 500;">{{ movie_details.analysis.pos_score }}%</span></div>
+                  <div>
+                    <div class="bar pos" style="width: {{ movie_details.analysis.pos_score }}%;"></div>
+                  </div>
                 </div>
+                {% endif %}
+
+                {% if movie_details.analysis.neutral_score > 0 %}
+                <div class="sentiment-bar">
+                  <div><span>Neutral</span><span style="color: var(--neu); font-weight: 500;">{{ movie_details.analysis.neutral_score }}%</span></div>
+                  <div>
+                    <div class="bar neut" style="width: {{ movie_details.analysis.neutral_score }}%;"></div>
+                  </div>
+                </div>
+                {% endif %}
+
+                {% if movie_details.analysis.neg_score > 0 %}
+                <div class="sentiment-bar">
+                  <div><span>Negative</span><span style="color: var(--neg); font-weight: 500;">{{ movie_details.analysis.neg_score }}%</span></div>
+                  <div>
+                    <div class="bar neg" style="width: {{ movie_details.analysis.neg_score }}%;"></div>
+                  </div>
+                </div>
+                {% endif %}
+
+              </div>
             </div>
-            {% endif %}
+          </div>
+          {% endif %}
 
         </div>
+      </div>
     </div>
-</div>
 
-</body>
+  </body>
 </html>
